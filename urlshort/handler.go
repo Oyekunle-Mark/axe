@@ -43,13 +43,17 @@ func MapHandler(pathsToUrls map[string]string, fallback http.Handler) http.Handl
 func YAMLHandler(yml []byte, fallback http.Handler) (http.HandlerFunc, error) {
 	var pathUrls []yamlPath
 	err := yaml.Unmarshal(yml, &pathUrls)
+
 	if err != nil {
 		return nil, err
 	}
+
 	pathMaps := make(map[string]string)
+
 	for _, path := range pathUrls {
 		pathMaps[path.path] = path.URL
 	}
+
 	return MapHandler(pathMaps, fallback), nil
 }
 
